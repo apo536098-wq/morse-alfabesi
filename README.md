@@ -69,3 +69,5 @@ Katkılarınızı bekliyoruz! Lütfen CONTRIBUTING.md dosyasını okuyun.
 📧 İletişim
 Sorularınız veya önerileriniz için Issues bölümünü kullanabilirsiniz.
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
+plain
+
