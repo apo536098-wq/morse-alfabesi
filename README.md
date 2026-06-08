@@ -1,27 +1,40 @@
-⚡ Morse Alfabesi Uygulaması
-GitHub Pages License HTML5 CSS3 JavaScript
+# ⚡ Morse Alfabesi Uygulaması
 
-> 🎯 Modern, interaktif ve ses destekli Morse alfabesi çevirici uygulaması. Tarayıcıda çalışan, kurulum gerektirmeyen hafif bir web uygulaması.
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen?logo=github)](https://kullaniciadi.github.io/morse-alfabesi/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-🚀 Canlı Demo
-Uygulamayı Deneyin →
+&gt; 🎯 Modern, interaktif ve ses destekli Morse alfabesi çevirici uygulaması. Tarayıcıda çalışan, kurulum gerektirmeyen hafif bir web uygulaması.
 
-✨ Özellikler
-Özellik	Açıklama
-🔄 Çift Yönlü Çeviri	Metin → Morse veya Morse → Metin dönüşümü
-🔊 Sesli Oynatma	Web Audio API ile gerçek ses tonları
-⚡ Hız Kontrolü	50-500 WPM arası ayarlanabilir hız
-📋 Kopyalama	Tek tıkla sonucu panoya kopyalama
-📖 Referans Tablosu	Tüm harflerin Morse kodları (tıklanabilir)
-🌙 Karanlık Tema	Modern karanlık arayüz tasarımı
-📱 Responsive	Mobil ve masaüstü uyumlu
-🌐 Çevrimdışı	İnternet bağlantısı gerektirmez
-🛠️ Kullanılan Teknolojiler
-HTML5 - Semantik yapı
-CSS3 - Flexbox, Grid, Custom Properties, Animations
-Vanilla JavaScript - Web Audio API, Clipboard API
-Google Fonts - JetBrains Mono + Inter
-📦 Kurulum
+## 🚀 Canlı Demo
+
+**[Uygulamayı Deneyin →](https://kullaniciadi.github.io/morse-alfabesi/)**
+
+## ✨ Özellikler
+
+| Özellik | Açıklama |
+|---------|----------|
+| 🔄 **Çift Yönlü Çeviri** | Metin → Morse veya Morse → Metin dönüşümü |
+| 🔊 **Sesli Oynatma** | Web Audio API ile gerçek ses tonları |
+| ⚡ **Hız Kontrolü** | 50-500 WPM arası ayarlanabilir hız |
+| 📋 **Kopyalama** | Tek tıkla sonucu panoya kopyalama |
+| 📖 **Referans Tablosu** | Tüm harflerin Morse kodları (tıklanabilir) |
+| 🌙 **Karanlık Tema** | Modern karanlık arayüz tasarımı |
+| 📱 **Responsive** | Mobil ve masaüstü uyumlu |
+| 🌐 **Çevrimdışı** | İnternet bağlantısı gerektirmez |
+
+## 🛠️ Kullanılan Teknolojiler
+
+- **HTML5** - Semantik yapı
+- **CSS3** - Flexbox, Grid, Custom Properties, Animations
+- **Vanilla JavaScript** - Web Audio API, Clipboard API
+- **Google Fonts** - JetBrains Mono + Inter
+
+## 📦 Kurulum
+
+```bash
 # Repoyu klonlayın
 git clone https://github.com/kullaniciadi/morse-alfabesi.git
 
@@ -56,4 +69,3 @@ Katkılarınızı bekliyoruz! Lütfen CONTRIBUTING.md dosyasını okuyun.
 📧 İletişim
 Sorularınız veya önerileriniz için Issues bölümünü kullanabilirsiniz.
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
-plain
