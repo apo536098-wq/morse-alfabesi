@@ -8,9 +8,6 @@
 
 &gt; 🎯 Modern, interaktif ve ses destekli Morse alfabesi çevirici uygulaması. Tarayıcıda çalışan, kurulum gerektirmeyen hafif bir web uygulaması.
 
-## 🚀 Canlı Demo
-
-**[Uygulamayı Deneyin →](https://kullaniciadi.github.io/morse-alfabesi/)**
 
 ## ✨ Özellikler
 
