@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Alfabesi Uygulaması</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.3);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #475569;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p { color: var(--text-secondary); font-size: 1.1rem; }
+
+        .mode-toggle { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
+        .mode-btn {
+            padding: 12px 28px;
+            border: 2px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .mode-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .mode-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .input-section { margin-bottom: 30px; }
+        .label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-area {
+            width: 100%;
+            min-height: 120px;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+            resize: vertical;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .input-area:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .input-area::placeholder { color: #64748b; }
+
+        .output-section { margin-bottom: 30px; }
+        .output-display {
+            width: 100%;
+            min-height: 120px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-word;
+            line-height: 1.8;
+            position: relative;
+            overflow: hidden;
+        }
+        .output-display::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
+        }
+        .output-display.empty { color: #64748b; font-style: italic; }
+
+        .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+        .action-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent), #0891b2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+        .action-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(6, 182, 212, 0.4); }
+        .action-btn.secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+        .action-btn.secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        .audio-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .audio-indicator.active { opacity: 1; }
+        .audio-indicator .pulse {
+            width: 12px; height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .reference-table { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 30px; }
+        .reference-table h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--text-secondary); text-align: center; }
+        .morse-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+        .morse-item {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .morse-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
+        }
+        .morse-char { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .morse-code { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 1rem; letter-spacing: 2px; }
+
+        .toast {
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { border-color: var(--success); color: var(--success); }
+        .toast.error { border-color: var(--error); color: var(--error); }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .speed-control label { font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+        .speed-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-input);
+            outline: none;
+        }
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .speed-value { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 700; min-width: 60px; text-align: right; }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px; }
+            .header h1 { font-size: 1.8rem; }
+            .morse-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Morse Alfabesi</h1>
+            <p>Metni Morse koduna çevirin veya Morse kodunu metne dönüştürün</p>
+        </div>
+
+        <div class="mode-toggle">
+            <button class="mode-btn active" onclick="setMode('encode')">Metin → Morse</button>
+            <button class="mode-btn" onclick="setMode('decode')">Morse → Metin</button>
+        </div>
+
+        <div class="input-section">
+            <label class="label" id="input-label">Metin Girin</label>
+            <textarea class="input-area" id="input-text" placeholder="Çevirmek istediğiniz metni buraya yazın..." spellcheck="false"></textarea>
+        </div>
+
+        <div class="output-section">
+            <label class="label">Sonuç</label>
+            <div class="output-display empty" id="output-display">Sonuç burada görünecek...</div>
+        </div>
+
+        <div class="speed-control">
+            <label>⚡ Hız:</label>
+            <input type="range" class="speed-slider" id="speed-slider" min="50" max="500" value="150" step="10">
+            <span class="speed-value" id="speed-value">150 WPM</span>
+        </div>
+
+        <div class="audio-indicator" id="audio-indicator">
+            <div class="pulse"></div>
+            <span>🔊 Ses çalınıyor...</span>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn primary" onclick="convert()" id="convert-btn">🔄 Çevir</button>
+            <button class="action-btn secondary" onclick="playAudio()" id="play-btn">🔊 Sesli Oynat</button>
+            <button class="action-btn secondary" onclick="copyResult()">📋 Kopyala</button>
+            <button class="action-btn secondary" onclick="clearAll()">🗑️ Temizle</button>
+        </div>
+
+        <div class="reference-table">
+            <h3>📖 Morse Alfabesi Referansı</h3>
+            <div class="morse-grid" id="morse-grid"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const morseMap = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..',
+            '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+            '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+            '.': '.-.-.-', ',': '--..--', '?': '..--..', "'": '.----.', '!': '-.-.--',
+            '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...', ':': '---...',
+            ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-', '_': '..--.-',
+            '"': '.-..-.', '$': '...-..-', '@': '.--.-.', ' ': '/'
+        };
+
+        const reverseMorseMap = {};
+        for (const [char, code] of Object.entries(morseMap)) { reverseMorseMap[code] = char; }
+
+        let currentMode = 'encode';
+        let audioContext = null;
+        let isPlaying = false;
+
+        function createReferenceTable() {
+            const grid = document.getElementById('morse-grid');
+            const entries = Object.entries(morseMap).filter(([k]) => k !== ' ');
+            entries.forEach(([char, code]) => {
+                const item = document.createElement('div');
+                item.className = 'morse-item';
+                item.innerHTML = `<div class="morse-char">${char}</div><div class="morse-code">${code}</div>`;
+                item.onclick = () => {
+                    const input = document.getElementById('input-text');
+                    input.value += char;
+                    input.focus();
+                    convert();
+                };
+                grid.appendChild(item);
+            });
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const label = document.getElementById('input-label');
+            const input = document.getElementById('input-text');
+            const output = document.getElementById('output-display');
+            if (mode === 'encode') {
+                label.textContent = 'Metin Girin';
+                input.placeholder = 'Çevirmek istediğiniz metni buraya yazın...';
+            } else {
+                label.textContent = 'Morse Kodu Girin';
+                input.placeholder = 'Örn: .... . .-.. .-.. --- / .-- --- .-. .-.. -..';
+            }
+            output.textContent = 'Sonuç burada görünecek...';
+            output.classList.add('empty');
+            input.value = '';
+        }
+
+        function convert() {
+            const input = document.getElementById('input-text').value.trim();
+            const output = document.getElementById('output-display');
+            if (!input) { output.textContent = 'Sonuç burada görünecek...'; output.classList.add('empty'); return; }
+            output.classList.remove('empty');
+            output.textContent = currentMode === 'encode' ? textToMorse(input) : morseToText(input);
+        }
+
+        function textToMorse(text) {
+            return text.toUpperCase().split('').map(char => morseMap[char] || char).join(' ');
+        }
+
+        function morseToText(morse) {
+            return morse.split(' ').map(code => code === '/' ? ' ' : reverseMorseMap[code] || code).join('');
+        }
+
+        async function playAudio() {
+            if (isPlaying) return;
+            const output = document.getElementById('output-display').textContent;
+            if (!output || output === 'Sonuç burada görünecek...') { showToast('Önce bir metin çevirin!', 'error'); return; }
+            isPlaying = true;
+            document.getElementById('play-btn').disabled = true;
+            document.getElementById('audio-indicator').classList.add('active');
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const speed = parseInt(document.getElementById('speed-slider').value);
+            const dotDuration = 60000 / (speed * 50);
+            const morse = currentMode === 'encode' ? output : textToMorse(output);
+            const symbols = morse.replace(/\\//g, ' ').split('');
+            let currentTime = audioContext.currentTime + 0.1;
+            for (const symbol of symbols) {
+                if (symbol === '.') { playTone(currentTime, dotDuration / 1000); currentTime += dotDuration / 1000 + 0.05; }
+                else if (symbol === '-') { playTone(currentTime, (dotDuration * 3) / 1000); currentTime += (dotDuration * 3) / 1000 + 0.05; }
+                else if (symbol === ' ') { currentTime += 0.2; }
+            }
+            const totalDuration = (currentTime - audioContext.currentTime) * 1000;
+            setTimeout(() => { isPlaying = false; document.getElementById('play-btn').disabled = false; document.getElementById('audio-indicator').classList.remove('active'); }, totalDuration + 200);
+        }
+
+        function playTone(startTime, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = 600;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+            oscillator.start(startTime);
+            oscillator.stop(startTime + duration);
+        }
+
+        function copyResult() {
+            const output = document.getElementById('output-display').textContent;
+            if (!output || output === 'Sonuç burada görünecek...') { showToast('Kopyalanacak bir sonuç yok!', 'error'); return; }
+            navigator.clipboard.writeText(output).then(() => showToast('Sonuç panoya kopyalandı!', 'success')).catch(() => showToast('Kopyalama başarısız!', 'error'));
+        }
+
+        function clearAll() {
+            document.getElementById('input-text').value = '';
+            const output = document.getElementById('output-display');
+            output.textContent = 'Sonuç burada görünecek...';
+            output.classList.add('empty');
+            showToast('Temizlendi!', 'success');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('speed-slider').addEventListener('input', function() {
+            document.getElementById('speed-value').textContent = this.value + ' WPM';
+        });
+
+        document.getElementById('input-text').addEventListener('input', function() {
+            if (this.value.trim()) convert();
+            else { const output = document.getElementById('output-display'); output.textContent = 'Sonuç burada görünecek...'; output.classList.add('empty'); }
+        });
+
+        createReferenceTable();
+    </script>
+</body>
+</html>
